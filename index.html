@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap By SKILLHUB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container mt-5 d-flex justify-content-center gap-3  align-items-end pb-5 vh-100">
+        <button type="button" id="start" class="btn btn-dark ">start camera</button>
+        <button type="button" id="capture" class="btn btn-primary d-none">camera <i class="bi bi-camera"> </i></button>
+        <button type="button" id="close" class="btn btn-danger d-none">Close <i class="bi bi-telephone-x"></i></button>
+    </div>
+
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <video  id="player" height="200" controls autoplay class="d-none"></video>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById("start")
+        const captureBtn = document.getElementById("capture")
+        const closeBtn = document.getElementById("close")
+        const player = document.getElementById("player")
+
+
+        startBtn.addEventListener("click", async () => {
+            console.log("start button clicked");
+            
+            // handel to start the camera
+
+            if (navigator.mediaDevices) {
+                
+             const x=  await navigator.mediaDevices.getUserMedia({video:true})
+             player.srcObject = x
+
+            } else {
+                console.error("media device not found");
+            }
+            // handel camera end
+            player.classList.remove("d-none")
+            // player.setAttribute("src","./1.mp4")
+
+            captureBtn.classList.remove("d-none")
+            closeBtn.classList.remove("d-none")
+            startBtn.classList.add("d-none")
+        })
+        captureBtn.addEventListener("click", () => {
+            console.log("capture button clicked");
+
+            startBtn.classList.remove("d-none")
+        })
+        closeBtn.addEventListener("click", () => {
+            console.log("close button clicked");
+
+            console.log(player.srcObject.getVideoTracks());
+            const tracks = player.srcObject.getVideoTracks()
+            for (let i = 0; i < tracks.length; i++) {
+                 tracks[i].stop();
+                
+            }
+
+            startBtn.classList.remove("d-none")
+            captureBtn.classList.add("d-none")
+            closeBtn.classList.add("d-none")
+            player.classList.add("d-none")
+        })
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
