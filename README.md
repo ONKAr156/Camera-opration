@@ -1,13 +1,13 @@
-## Camera Application PWA
+## Camera Application 
 This is a simple project that demonstrates how to use the camera in a Progressive Web Application (PWA) using vanilla JavaScript. The application allows users to take photos using their device's camera and save them to their device's photo gallery.
 
 ## Technologies Used
 The following technologies were used to build this application:
 
 * HTML5
-* CSS3
+* Bootstrap
 * JavaScript
-* Camera API
+
 
 ## Installation
 To run this application on your local machine, follow these steps:
