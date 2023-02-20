@@ -21,6 +21,12 @@
         <video id="player" height="200" controls autoplay class="d-none"></video>
     </div>
 
+    <div class="position-absolute" style=" top:50px; right: 50px;">
+        <button type="button" id="switchCamera" class="btn btn-outline-primary btn-lg d-none">
+            <i class="bi bi-camera2"></i>
+    </div>
+    </button>
+
 
     <script>
         const startBtn = document.getElementById("start")
@@ -28,45 +34,33 @@
         const closeBtn = document.getElementById("close")
         const player = document.getElementById("player")
 
+        const switchBtn = document.getElementById("switchCamera")
+
+        let mode = "user"
+        switchBtn.addEventListener("click", async () => {
+          mode =  mode === "environment" ? "user" : "environment"
+          player.classList.add("d-none")
+
+            const tracks = player.srcObject.getVideoTracks()
+            for (let i = 0; i < tracks.length; i++) {
+                tracks[i].stop()
+
+            }
+            openCamera()
+        })
+
 
         startBtn.addEventListener("click", async () => {
-            console.log("start button clicked");
-
-            // handel to start the camera
-
-            if (navigator.mediaDevices) {
-                document.getElementById("loader").innerHTML = `opening camera <div class="spinner-border text-dark"></div> `
-                startBtn.setAttribute("disabled", true)
+            openCamera()
 
 
-                const x = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    video: {
-                        facingMode: {
-                            exact: "environment"
-                        }
-
-                    },
-                })
-                player.srcObject = x
-
-                document.getElementById("loader").innerHTML = ``
-                startBtn.removeAttribute("disabled")
-            } else {
-                console.error("media device not found");
-            }
-            // handel camera end
-            player.classList.remove("d-none")
-            // player.setAttribute("src","./1.mp4")
-
-            captureBtn.classList.remove("d-none")
-            closeBtn.classList.remove("d-none")
-            startBtn.classList.add("d-none")
         })
         captureBtn.addEventListener("click", () => {
             console.log("capture button clicked");
 
             startBtn.classList.remove("d-none")
+            switchCamera.classList.remove("d-none") 
+         
         })
         closeBtn.addEventListener("click", () => {
             console.log("close button clicked");
@@ -82,8 +76,41 @@
             captureBtn.classList.add("d-none")
             closeBtn.classList.add("d-none")
             player.classList.add("d-none")
+       
         })
 
+        const openCamera = async () => {
+            if (navigator.mediaDevices) {
+                document.getElementById("loader").innerHTML = `opening camera <div class="spinner-border text-dark"></div> `
+                startBtn.setAttribute("disabled", true)
+
+
+                try {
+                    const x = await navigator.mediaDevices.getUserMedia({
+
+                        video: {
+                            facingMode: mode
+
+                        },
+                    })
+                    player.srcObject = x
+                } catch (error) {
+                    console.warn(error);
+                }
+
+                document.getElementById("loader").innerHTML = ``
+                startBtn.removeAttribute("disabled")
+            } else {
+                console.error("media device not found");
+            }
+            // handel camera end
+            player.classList.remove("d-none")
+            captureBtn.classList.remove("d-none")
+            closeBtn.classList.remove("d-none")
+            startBtn.classList.add("d-none")
+            switchCamera.classList.add("d-none") 
+
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
