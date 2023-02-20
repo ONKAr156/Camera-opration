@@ -12,13 +12,15 @@
 <body>
     <div class="container mt-5 d-flex justify-content-center gap-3  align-items-end pb-5 vh-100">
         <button type="button" id="start" class="btn btn-dark ">start camera</button>
-        <button type="button" id="capture" class="btn btn-primary d-none">capture <i class="bi bi-camera"> </i></button>
+        <button type="button" id="capture" class="btn btn-primary d-none">Capture <i class="bi bi-camera"> </i></button>
         <button type="button" id="close" class="btn btn-danger d-none">Close <i class="bi bi-telephone-x"></i></button>
     </div>
 
     <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="d-flex  align-content-center gap-2" id="loader"></div>
         <video id="player" height="200" controls autoplay class="d-none"></video>
     </div>
+
 
     <script>
         const startBtn = document.getElementById("start")
@@ -33,10 +35,23 @@
             // handel to start the camera
 
             if (navigator.mediaDevices) {
+                document.getElementById("loader").innerHTML = `opening camera <div class="spinner-border text-dark"></div> `
+                startBtn.setAttribute("disabled", true)
 
-                const x = await navigator.mediaDevices.getUserMedia({ video: true })
+
+                const x = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    video: {
+                        facingMode: {
+                            exact: "environment"
+                        }
+
+                    },
+                })
                 player.srcObject = x
 
+                document.getElementById("loader").innerHTML = ``
+                startBtn.removeAttribute("disabled")
             } else {
                 console.error("media device not found");
             }
