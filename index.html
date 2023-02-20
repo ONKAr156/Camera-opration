@@ -12,12 +12,12 @@
 <body>
     <div class="container mt-5 d-flex justify-content-center gap-3  align-items-end pb-5 vh-100">
         <button type="button" id="start" class="btn btn-dark ">start camera</button>
-        <button type="button" id="capture" class="btn btn-primary d-none">camera <i class="bi bi-camera"> </i></button>
+        <button type="button" id="capture" class="btn btn-primary d-none">capture <i class="bi bi-camera"> </i></button>
         <button type="button" id="close" class="btn btn-danger d-none">Close <i class="bi bi-telephone-x"></i></button>
     </div>
 
     <div class="position-absolute top-50 start-50 translate-middle">
-        <video  id="player" height="200" controls autoplay class="d-none"></video>
+        <video id="player" height="200" controls autoplay class="d-none"></video>
     </div>
 
     <script>
@@ -29,13 +29,13 @@
 
         startBtn.addEventListener("click", async () => {
             console.log("start button clicked");
-            
+
             // handel to start the camera
 
             if (navigator.mediaDevices) {
-                
-             const x=  await navigator.mediaDevices.getUserMedia({video:true})
-             player.srcObject = x
+
+                const x = await navigator.mediaDevices.getUserMedia({ video: true })
+                player.srcObject = x
 
             } else {
                 console.error("media device not found");
@@ -59,8 +59,8 @@
             console.log(player.srcObject.getVideoTracks());
             const tracks = player.srcObject.getVideoTracks()
             for (let i = 0; i < tracks.length; i++) {
-                 tracks[i].stop();
-                
+                tracks[i].stop();
+
             }
 
             startBtn.classList.remove("d-none")
